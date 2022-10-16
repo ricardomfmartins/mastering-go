@@ -42,7 +42,7 @@ func saveCSVFile(filepath string) error {
 	defer csvfile.Close()
 
 	csvwriter := csv.NewWriter(csvfile)
-	csvwriter.Comma = '\t'
+	csvwriter.Comma = '#'
 	for _, row := range myData {
 		temp := []string{row.Name, row.Surname, row.Number, row.LastAccess}
 		_ = csvwriter.Write(temp)

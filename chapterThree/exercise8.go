@@ -34,7 +34,7 @@ func readCSVFile(filepath string) ([][]string, error) {
 	return lines, nil
 }
 
-func saveCSVFile(filepath string) error {
+func saveCSVFile(filepath string, separator string) error {
 	csvfile, err := os.Create(filepath)
 	if err != nil {
 		return err
@@ -42,7 +42,8 @@ func saveCSVFile(filepath string) error {
 	defer csvfile.Close()
 
 	csvwriter := csv.NewWriter(csvfile)
-	csvwriter.Comma = '\t'
+
+	csvwriter.Comma = []rune(separator)[0]
 	for _, row := range myData {
 		temp := []string{row.Name, row.Surname, row.Number, row.LastAccess}
 		_ = csvwriter.Write(temp)
@@ -52,8 +53,8 @@ func saveCSVFile(filepath string) error {
 }
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("csvData input output!")
+	if len(os.Args) != 4 {
+		fmt.Println("csvData input output separator!")
 	}
 
 	input := os.Args[1]
@@ -76,7 +77,7 @@ func main() {
 		fmt.Println(temp)
 	}
 
-	err = saveCSVFile(output)
+	err = saveCSVFile(output, os.Args[3])
 	if err != nil {
 		fmt.Println(err)
 		return
